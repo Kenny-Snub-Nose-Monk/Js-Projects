@@ -1,100 +1,126 @@
-const display = document.querySelector(".display h1");
-const inputBtns = document.querySelectorAll("button");
-const numberBtns = document.querySelectorAll("number");
-const operatorBtns = document.querySelectorAll("operator");
-const clearBtn = document.querySelector(".clear");
-const positive_negative_conversion = document.querySelector(
-  ".plus_minus_conversion"
-);
+// Didn't solve
+//  Decimal problem
+// multiple "=" problem
 
-let firstNumber = 0;
-let operatorValue = "";
+const display = document.querySelector(".display h1");
+const buttons = document.querySelectorAll("button");
+let firstValue = "";
+let currentValue = "";
+let lastOperator = "";
 let waitforSecondNumber = false;
 
-// display.textContent = firstNumber;
-function strip(number) {
-  return parseFloat(number);
-}
+function sendNumberValue(number) {
+  // display.textContent = number;
+  currentValue = display.textContent;
 
-const calculate = {
-  "/": (firstNumber, secondNumber) =>
-    Number.parseFloat(firstNumber / secondNumber),
-  "*": (firstNumber, secondNumber) =>
-    Number.parseFloat(firstNumber * secondNumber),
-  "+": (firstNumber, secondNumber) =>
-    Number.parseFloat(firstNumber + secondNumber),
-  "-": (firstNumber, secondNumber) =>
-    Number.parseFloat(firstNumber - secondNumber),
-  "%": (firstNumber, secondNumber) =>
-    Number.parseFloat(firstNumber % secondNumber),
-  "=": (firstNumber, secondNumber) => Number.parseFloat(secondNumber),
-};
-
-const sendNumberValue = (number) => {
   if (waitforSecondNumber) {
     display.textContent = number;
     waitforSecondNumber = false;
   } else {
-    const displayValue = display.textContent;
-    display.textContent = displayValue === "0" ? number : displayValue + number;
+    display.textContent = currentValue === "0" ? number : currentValue + number;
   }
-};
+}
 
-const plus_minus_conversion = () => {
-  display.textContent = Number(display.textContent) * -1;
-};
+function calculate(lastValue, currentValue, operator) {
+  // if click "=" over 1 time
 
-const useOperator = (operator) => {
-  const currentValue = Number(display.textContent);
+  if (operator === "=" && !lastOperator) {
+    operator = lastOperator;
+  }
 
-  console.log(currentValue);
+  if (operator === "+") {
+    lastOperator = operator;
+    return parseFloat(Number(lastValue) + Number(currentValue));
+  } else if (operator === "-") {
+    lastOperator = operator;
+    return parseFloat(Number(lastValue) - Number(currentValue));
+  } else if (operator === "*") {
+    lastOperator = operator;
+    return parseFloat(Number(lastValue) * Number(currentValue));
+  } else if (operator === "/") {
+    lastOperator = operator;
+    return parseFloat(Number(lastValue) / Number(currentValue));
+  } else if (operator === "=") {
+    return parseFloat(currentValue);
+  }
+}
 
-  // Prevent multiple operators
-  if (operatorValue && waitforSecondNumber) {
-    operatorValue = operator;
+function useOperator(operator) {
+  currentValue = display.textContent;
+
+  if (lastOperator && waitforSecondNumber) {
+    lastOperator = operator;
     return;
   }
 
-  // Assign firstValue if no value
-  if (!firstNumber && !operatorValue) {
-    firstNumber = currentValue;
+  if (!firstValue && firstValue !== "0") {
+    firstValue = currentValue;
   } else {
-    const calculation = calculate[operatorValue](firstNumber, currentValue);
-    display.textContent = calculation;
-    firstNumber = calculation;
+    // console.log(firstValue);
+    // console.log(lastOperator);
+    // console.log(currentValue);
+    // console.log(operator);
+
+    display.textContent = calculate(firstValue, currentValue, lastOperator);
+    firstValue = display.textContent;
   }
 
-  //Ready for next value, store operator
+  lastOperator = operator;
   waitforSecondNumber = true;
-  operatorValue = operator;
-};
+}
 
-const addDecimal = () => {
-  // If operator pressed, don't add decimal
+function addDecimal() {
   if (!display.textContent.includes(".")) {
     display.textContent = `${display.textContent}.`;
   }
-};
+}
 
-//Reset all values, display
-function resetAll() {
-  firstNumber = 0;
+function clear() {
+  firstValue = 0;
   // operatorValue = "";
   waitforSecondNumber = false;
   display.textContent = "0";
 }
 
-//Add Event Listeners for numbers, operators, decimal
-inputBtns.forEach((inputBtn) => {
-  if (inputBtn.classList.contains("number")) {
-    inputBtn.addEventListener("click", () => sendNumberValue(inputBtn.value));
-  } else if (inputBtn.classList.contains("operator")) {
-    inputBtn.addEventListener("click", () => useOperator(inputBtn.value));
-  } else if (inputBtn.classList.contains("decimal")) {
-    inputBtn.addEventListener("click", () => addDecimal());
+function signChange() {
+  display.textContent = Number(display.textContent) * -1;
+}
+
+function percentage() {
+  display.textContent = parseFloat(Number(display.textContent) * 0.01);
+}
+
+// function decimal(number){
+//   if (number.indexOf(".") > 0) {
+//     return 0.1 ^ (lastValue.length - number.indexOf(".")) ;
+//   }
+//   return 1
+// }
+
+buttons.forEach((button) => {
+  if (button.classList.contains("operator")) {
+    button.addEventListener("click", () => useOperator(button.value));
+  } else if (button.classList.contains("number")) {
+    button.addEventListener("click", () => sendNumberValue(button.value));
+  } else if (button.classList.contains("plus_minus_conversion")) {
+    button.addEventListener("click", signChange);
+  } else if (button.classList.contains("clear")) {
+    button.addEventListener("click", clear);
+  } else if (button.classList.contains("percentage")) {
+    button.addEventListener("click", percentage);
   }
 });
 
-//Event Listener
-clearBtn.addEventListener("click", resetAll);
-positive_negative_conversion.addEventListener("click", plus_minus_conversion);
+document.addEventListener("keydown", (e) => {
+  const operatorList = ["+", "-", "*", "/", "="];
+  console.log(e);
+  if (operatorList.includes(e.key)) {
+    useOperator(e.key);
+  } else if (e.key.match(/[0-9]/)) {
+    sendNumberValue(e.key);
+  } else if (e.key === "Delete" || e.key === "Backspace") {
+    clear();
+  } else if (e.key === ".") {
+    percentage();
+  }
+});
