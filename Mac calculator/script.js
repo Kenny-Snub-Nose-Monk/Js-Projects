@@ -87,7 +87,31 @@ function signChange() {
 }
 
 function percentage() {
-  display.textContent = parseFloat(Number(display.textContent) * 0.01);
+  if (display.textContent === "0") return;
+
+  if (!display.textContent.startsWith("0.")) {
+    let dotPosition = 0;
+    if (display.textContent.indexOf(".") > 0) {
+      dotPosition = display.textContent.indexOf(".") - 2;
+    } else {
+      dotPosition = display.textContent.length - 2;
+    }
+
+    if (dotPosition > 0) {
+      display.textContent =
+        display.textContent.replace(".", "").slice(0, dotPosition) +
+        "." +
+        display.textContent.replace(".", "").slice(dotPosition);
+    } else {
+      display.textContent =
+        "0." +
+        "0".repeat(Math.abs(dotPosition)) +
+        display.textContent.replace(".", "");
+    }
+  } else {
+    display.textContent =
+      "0." + "0".repeat(2) + display.textContent.replace("0.", "");
+  }
 }
 
 // function decimal(number){
@@ -108,6 +132,8 @@ buttons.forEach((button) => {
     button.addEventListener("click", clear);
   } else if (button.classList.contains("percentage")) {
     button.addEventListener("click", percentage);
+  } else {
+    button.addEventListener("click", addDecimal);
   }
 });
 
