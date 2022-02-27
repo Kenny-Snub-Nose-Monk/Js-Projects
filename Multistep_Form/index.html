@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://kit.fontawesome.com/320326c6a9.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div data-steps>
+      <!-- progressbar -->
+      <ul id="progressbar">
+        <li class="active">Account Setup</li>
+        <li>Personal Details</li>
+        <li>Social Profiles</li>
+      </ul>
+    </div>
+    <form action="" data-form class="multi-step-form">
+      <div class="card active" data-step="1">
+        <h1 data-title>Create Your Account</h1>
+
+        <!-- Email -->
+        <input type="email" name="email" placeholder="Email" required />
+
+        <!-- Password -->
+        <input
+          type="password"
+          id="password1"
+          placeholder="Password"
+          name="password"
+          required
+          pattern="^(?=[0-9a-zA-Z]*\d)(?=[0-9a-zA-Z]*[a-z])(?=[0-9a-zA-Z]*[A-Z])[0-9a-zA-Z]{8,}$"
+          title="Please include at least 1 uppercase character, 1 lowercase character, and 1 number."
+        />
+        <input
+          type="password"
+          id="password2"
+          placeholder="Confirm Password"
+          title="Please align Password"
+          required
+          pattern="^(?=[0-9a-zA-Z]*\d)(?=[0-9a-zA-Z]*[a-z])(?=[0-9a-zA-Z]*[A-Z])[0-9a-zA-Z]{8,}$"
+        />
+        <button type="button" data-next>Next</button>
+      </div>
+      <div class="card" data-step="2">
+        <h1 data-title>Personal Details</h1>
+        <h2 data-subtitle>We will never sell it</h2>
+
+        <!-- Full Name -->
+        <input
+          type="text"
+          placeholder="First Name"
+          name="firstName"
+          required
+          minlength="3"
+          maxlength="30"
+        />
+        <input
+          type="text"
+          placeholder="Last Name"
+          name="lastName"
+          required
+          minlength="3"
+          maxlength="30"
+        />
+
+        <!-- Phone Number -->
+        <input
+          type="tel"
+          placeholder="Phone : 09-XXXXXXXX"
+          name="phone"
+          required
+          pattern="09-[0-9]{8}"
+        />
+
+        <!-- Address -->
+        <textarea
+          name="address"
+          name="address"
+          placeholder="Address"
+        ></textarea>
+
+        <div class="button-box">
+          <button type="button" data-previous>Previous</button>
+          <button type="button" data-next>Next</button>
+        </div>
+      </div>
+      <div class="card" data-step="3">
+        <h1 data-title>SOCIAL PROFILES</h1>
+        <h2 data-subtitle>Your presence on the social network</h2>
+
+        <!-- Twitter -->
+        <div class="form-group">
+          <i class="fa-brands fa-twitter fa-xl"></i>
+          <input type="text" name="twitter" placeholder="Twitter" />
+        </div>
+        <!-- Facebook -->
+        <div class="form-group">
+          <i class="fa-brands fa-facebook fa-xl"></i>
+          <input type="text" name="facebook" placeholder="Facebook" />
+        </div>
+        <!-- Instagram  -->
+        <div class="form-group">
+          <i class="fa-brands fa-instagram fa-xl"></i>
+          <input type="text" name="instagram" placeholder="Instagram" />
+        </div>
+
+        <div class="button-box">
+          <button type="button" data-previous>Previous</button>
+          <button type="submit" data-submit>Submit</button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
