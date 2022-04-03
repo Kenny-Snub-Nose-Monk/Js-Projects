@@ -1,0 +1,48 @@
+*::before, *::after, *{
+  box-sizing: border-box;
+}
+
+body{
+  background-color: #769FCD;
+  color: #B9D7EA;
+  text-align: center;
+}
+
+.strength-meter {
+  color: #1E2022;
+  position: relative;
+  height: 2rem;
+  width: 90%;
+  border: 3px solid #053742;
+  border-radius: 1rem;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.strength-meter::before{
+  content: attr(data-content);
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: calc(1% * var(--strength, 0));
+  background-color: #D6E6F2;
+  transition: width 200ms;
+}
+
+.password-input{
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  width: 90%;
+  padding: .25rem .75rem;
+  background-color: #1E2022;
+  color: white;
+  border: 2px solid #52616B;
+  outline: none;
+  text-align: center;
+  border-radius: .3rem;
+}
+
+.reasons > *{
+  margin-top: .5rem;
+  color: #F7FBFC;
+}
